@@ -9,8 +9,16 @@ class Host(models.Model):
                     (1,'Accepted'),
                     (2,'Rejected'))
 
+    os_type_choice=(
+        ('redhat','Redhat\Centos'),
+        ('ubuntu','Ubuntu'),
+        ('suse','Suse'),
+        ('windows','Windows'),
+    )
+
+    os_type = models.CharField(choices=os_type_choice,max_length=64,default='redhat')
     status=models.SmallIntegerField(choices=status_choices,default=0)
-    
+
     def __str__(self):
         return self.hostname
 

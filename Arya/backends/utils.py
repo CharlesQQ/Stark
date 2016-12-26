@@ -3,6 +3,11 @@
 __author__ = "charles"
 
 from Arya import action_list
+import django
+django.setup()    #将django的环境变量加载进来
+
+
+from Arya import models
 
 class ArgvManagement(object):
     """
@@ -19,15 +24,15 @@ class ArgvManagement(object):
         exit()
 
     def argv_parse(self):
-        print(self.argvs)
+        #print(self.argvs)
         if len(self.argvs) <2:
             self.help_msg()
         module_name=self.argvs[1]
         if '.' in module_name:
             mod_name,mod_method=module_name.split('.')
-            module_instance=action_list.actions.get(module_name)
+            module_instance=action_list.actions.get(mod_name)
             if module_instance: #matched
-                module_instance(self.argvs)
+                module_instance(self.argvs,models)
 
         else:
             exit("Invalid module name argument")
