@@ -33,6 +33,7 @@ class ArgvManagement(object):
             module_instance=action_list.actions.get(mod_name)
             if module_instance: #matched
                 module_obj = module_instance(self.argvs,models,settings)
+                module_obj.process()    #提取主机
                 if hasattr(module_obj,mod_method):
                     module_method_obj = getattr(module_obj,mod_method)
                     module_method_obj()  #调用指定的指令

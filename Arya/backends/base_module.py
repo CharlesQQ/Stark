@@ -10,8 +10,8 @@ class BaseSaltModule(object):
         self.db_models=db_models
         self.settings =  settings
         self.sys_argvs=sys_argvs
-        self.fetch_hosts()    #获取主机列表
-        self.config_data_dic = self.get_selected_os_types()
+        # self.fetch_hosts()    #获取主机列表
+        # self.config_data_dic = self.get_selected_os_types()
 
     def get_selected_os_types(self):
         """
@@ -25,7 +25,8 @@ class BaseSaltModule(object):
         return data
 
     def process(self):    #抽象类
-        pass
+        self.fetch_hosts()    #获取主机列表
+        self.config_data_dic = self.get_selected_os_types()
 
 
     def fetch_hosts(self):
