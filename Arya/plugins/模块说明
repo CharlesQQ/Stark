@@ -1,3 +1,18 @@
 有几种操作系统，就需要生成几个配置文件;
 当客户端第一次链接过来的时候，就讲客户端的信息存入数据库；每一次发布任务的时候，将主机取出来，判断有几种操作系统类型;每个模块执行之前都需要提前提取配置；
 写一个公共的类，将提取主机信息等内容写进去;
+
+
+CharlesdeMacBook-Air:Stark charles$ python3.5 Arya/salt.py state.apply -h "ubuntu test,windows test" -g "web:cluster" -f test.yaml
+
+主机--->操作系统类型--->多份命令
+
+
+配置管理:最后需要将配置文件转换成命令
+
+状态管理:需要有客户端
+
+
+抽象类:在父类的构造方法中调用一个不存在的类，在子类实例化的时候，如果这个方法没有再子类中定义，就会报错;
+
+python3.5 Arya/salt.py state.apply -h "ubuntu test" -f test.yml

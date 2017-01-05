@@ -23,20 +23,20 @@ class ArgvManagement(object):
             print("\t%s" %registered_module)
         exit()
 
-    def argv_parse(self):
+    def argv_parse(self):        #
         #print(self.argvs)
         if len(self.argvs) <2:
             self.help_msg()
         module_name=self.argvs[1]
         if '.' in module_name:
             mod_name,mod_method=module_name.split('.')
-            module_instance=action_list.actions.get(mod_name)
-            if module_instance: #matched
-                module_obj = module_instance(self.argvs,models,settings)
-                module_obj.process()    #提取主机
+            module_instance = action_list.actions.get(mod_name)    #获取模块:后面的内容
+            if module_instance: #matched         监测
+                module_obj = module_instance(self.argvs,models,settings)    #实例化类,比如state类
+                module_obj.process()    #提取主机，调用的是基类的方法，写在基类中的方法，所有的模块都需要调用，并且可以在基类中要求子类中必须实现什么方法(抽象类)
                 if hasattr(module_obj,mod_method):
                     module_method_obj = getattr(module_obj,mod_method)
-                    module_method_obj()  #调用指定的指令
+                    module_method_obj()  #调用指定的指令,比如state.apply
                     #module_method_obj.process()    #解析任务，发送到队列，取任务结果
                 else:
                     exit("module [%s] doesn't have [%s] method" %(mod_name,mod_method))
