@@ -31,7 +31,7 @@ class ArgvManagement(object):
         if '.' in module_name:
             mod_name,mod_method=module_name.split('.')
             module_instance = action_list.actions.get(mod_name)    #获取模块:后面的内容
-            if module_instance: #matched         监测
+            if module_instance: #matched         监测,比如state.State
                 module_obj = module_instance(self.argvs,models,settings)    #实例化类,比如state类
                 module_obj.process()    #提取主机，调用的是基类的方法，写在基类中的方法，所有的模块都需要调用，并且可以在基类中要求子类中必须实现什么方法(抽象类)
                 if hasattr(module_obj,mod_method):

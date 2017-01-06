@@ -30,8 +30,8 @@ class BaseSaltModule(object):
         return data
 
     def process(self):    #抽象类
-        self.fetch_hosts()    #获取主机列表
-        self.config_data_dic = self.get_selected_os_types()
+        self.fetch_hosts()    #获取主机列表,self.host_list
+        self.config_data_dic = self.get_selected_os_types()    #通过host_list列举出对于的os的类型
 
 
     def require(self,*args,**kwargs):
@@ -82,23 +82,23 @@ class BaseSaltModule(object):
         exit('Error: is_required() method must be implemented in module class [%s]'%args[0])
 
     def get_module_instance(self,*args,**kwargs):
-        base_mod_name = kwargs.get('base_mod_name')
+        base_mod_name = kwargs.get('base_mod_name')   #user
         os_type = kwargs.get('os_type')
-        plugin_file_path = "%s/%s.py" % (self.settings.SALT_PLUGINS_DIR, base_mod_name)
+        plugin_file_path = "%s/%s.py" % (self.settings.SALT_PLUGINS_DIR, base_mod_name)       #plugins/user.py
         if os.path.isfile(plugin_file_path):
             # 导入模块
-            module_plugin = __import__('plugins.%s' % base_mod_name)  # 调入plugins整个包
+            module_plugin = __import__('plugins.%s' % base_mod_name)  # 导入plugins整个包     #plugin.user
             # print(module_plugin)
-            special_os_module_name = "%s%s" % (os_type.capitalize(), base_mod_name.capitalize())
-            module_file = getattr(module_plugin, base_mod_name)  # 真正导入模块
+            special_os_module_name = "%s%s" % (os_type.capitalize(), base_mod_name.capitalize())    #UbuntuUser
+            module_file = getattr(module_plugin, base_mod_name)  # 真正导入模块      plugin user
             if hasattr(module_file, special_os_module_name):  # 判断有没有根据操作系统的类型进行特殊解析的类，在这个文件中;比如在user.py中看
                 module_instance = getattr(module_file, special_os_module_name)  # 导入类
             else:
                 module_instance = getattr(module_file, base_mod_name.capitalize())
-            module_obj = module_instance(self.sys_argvs, self.db_models, self.settings)
+            module_obj = module_instance(self.sys_argvs, self.db_models, self.settings)   #实例化UbuntuUser
             return module_obj
 
-    def  syntax_parser(self,section_name,mod_name,mod_data,os_type):    #每个类都需要进行解析
+    def  syntax_parser(self,section_name,mod_name,mod_data,os_type):    #每个类都需要进行解析      apache/user.present ...
         print("--going to parser state data:",section_name,mod_name)
 
         self.raw_cmds = []
@@ -106,7 +106,7 @@ class BaseSaltModule(object):
         for state_item in mod_data:
             print("\t",state_item)
             for key,val in state_item.items():
-                if hasattr(self,key):
+                if hasattr(self,key):      #是否有shell/passord等方法
                     # print(key)
                     state_func = getattr(self,key)
                     state_func(val,section=section_name,os_type=os_type)
