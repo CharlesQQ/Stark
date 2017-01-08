@@ -38,14 +38,14 @@ class BaseSaltModule(object):
         print("in require",args,kwargs)
         os_type = kwargs.get('os_type')
 
-        require_list = []
+        self.require_list = []
         for item in args[0]:
             for mod_name,mod_val in item.items():
                 module_obj = self.get_module_instance(base_mod_name=mod_name,os_type=os_type)
                 require_condition = module_obj.is_required(mod_name,mod_val)
-                require_list.append(require_condition)
+                self.require_list.append(require_condition)
                 # print("require run module:",module_obj)
-            print(require_list)
+        # print("require list",self.require_list)
 
 
     def fetch_hosts(self):
@@ -78,7 +78,9 @@ class BaseSaltModule(object):
         else:
             exit("host [-h] or group [-g] agument must be provided")
 
-    def is_required(self,*args,**kwargs):
+
+
+    def is_required(self,*args,**kwargs):     #基类中的方法，啥也不做，如果子类中没有这个方法，退出，后面的不执行
         exit('Error: is_required() method must be implemented in module class [%s]'%args[0])
 
     def get_module_instance(self,*args,**kwargs):
@@ -117,7 +119,17 @@ class BaseSaltModule(object):
                 base_mod_name,mod_action = mod_name.split('.')
                 if hasattr(self,mod_action):
                     mod_action_func = getattr(self,mod_action)
-                    mod_action_func(section=section_name)
+                    cmd_list = mod_action_func(section=section_name,mod_data=mod_data)          #present
+                    data = {
+                        'cmd_list':cmd_list,
+                        'require_list':self.require_list,
+                    }
+                    #上面代表一个section里面的一个module已经解析完毕了
+
+                    if type(cmd_list) is dict:
+                        data['file_module'] = True
+                        data['sub_action'] = cmd_list.get('sub_action')
+                    return data
                 else:
                     exit("Error:module [%s] has no argument %s---" %(mod_name,mod_action))
             else:

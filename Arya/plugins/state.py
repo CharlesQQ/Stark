@@ -4,7 +4,7 @@ __author__ = "charles"
 
 from Arya.backends.base_module import BaseSaltModule
 import os
-
+from Arya.backends import tasks
 class State(BaseSaltModule):
 
 
@@ -43,10 +43,20 @@ class State(BaseSaltModule):
 
                     for section_name,section_data in state_data.items():
                         print('Section:',section_name)
+
                         for mod_name,mod_data in section_data.items():
                             base_mod_name = mod_name.split(".")[0]
                             module_obj = self.get_module_instance(base_mod_name=base_mod_name,os_type=os_type)
-                            module_obj.syntax_parser(section_name,mod_name,mod_data,os_type)
+                            module_parse_result = module_obj.syntax_parser(section_name,mod_name,mod_data,os_type)
+                            self.config_data_dic[os_type].append(module_parse_result)
+                #代表上面所有的解析数据已经完成，接下来生产任务，并把任务放入队列
+                print('config_data_dic'.center(60,'*'))
+                print(self.config_data_dic)
+
+                #生成新任务
+                new_task_obj = tasks.TaskHandle(self.db_models,self.config_data_dic,self.settings,self)
+                new_task_obj.dispatch_task()
+
                             # # print(base_mod_name,'DDDDDDD')
                             # plugin_file_path = "%s/%s.py" %(self.settings.SALT_PLUGINS_DIR,base_mod_name)
                             # if os.path.isfile(plugin_file_path):

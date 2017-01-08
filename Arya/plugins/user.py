@@ -45,10 +45,16 @@ class User(BaseSaltModule):
         self.raw_cmds.insert(0,"useradd %s" %username)
         cmd_list.append(' '.join(self.raw_cmds))
         cmd_list.extend(self.single_line_cmds)
+        return cmd_list
         print("cmd list:",cmd_list)
 
     def is_required(self,*args,**kwargs):
         print('checking user required',args,kwargs)
+        name = args[1]
+
+        cmd = '''more /etc/group |awk -F ':' '{print $1}' |grep -w %s -q;echo $?''' %name
+        return cmd
+
 
 
 class UbuntuUser(User):

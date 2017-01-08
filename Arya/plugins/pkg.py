@@ -9,4 +9,4 @@ class Pkg(BaseSaltModule):
     pass
 
     def is_required(self,*args,**kwargs):
-        pass
+        return 'echo 0'
