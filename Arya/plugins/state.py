@@ -45,7 +45,7 @@ class State(BaseSaltModule):
                         print('Section:',section_name)
 
                         for mod_name,mod_data in section_data.items():
-                            base_mod_name = mod_name.split(".")[0]
+                            base_mod_name = mod_name.split(".")[0]    #user
                             module_obj = self.get_module_instance(base_mod_name=base_mod_name,os_type=os_type)
                             module_parse_result = module_obj.syntax_parser(section_name,mod_name,mod_data,os_type)
                             self.config_data_dic[os_type].append(module_parse_result)
