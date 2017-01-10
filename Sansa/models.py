@@ -1,7 +1,7 @@
 from django.db import models
 
 # Create your models here.
-
+from Wolf.models import UserProfile
 
 class Asset(models.Model):
 
@@ -58,7 +58,7 @@ class Asset(models.Model):
         return '<id:%s name:%s>'  %(self.id,self.name )
 
 class Server(models.Model):
-    asset = models.OneToOneField('Asset')
+    asset = models.OneToOneField('Asset')      #资产表需要被路由器,server等关联
     sub_assset_type_choices = (
         (0,'PC服务器'),
         (1,'刀片机'),
@@ -70,7 +70,7 @@ class Server(models.Model):
     )
     sub_asset_type = models.SmallIntegerField(choices=sub_assset_type_choices,verbose_name="服务器类型",default=0)
     created_by = models.CharField(choices=created_by_choices,max_length=32,default='auto') #auto: auto created,   manual:created manually
-    hosted_on = models.ForeignKey('self',related_name='hosted_on_server',blank=True,null=True) #for vitural server
+    hosted_on = models.ForeignKey('self',related_name='hosted_on_server',blank=True,null=True) #for vitural server 宿主，将虚拟机信息存储下来
     #sn = models.CharField(u'SN号',max_length=128)
     #management_ip = models.CharField(u'管理IP',max_length=64,blank=True,null=True)
     #manufactory = models.ForeignKey(verbose_name=u'制造商',max_length=128,null=True, blank=True)
@@ -126,7 +126,7 @@ class NetworkDevice(models.Model):
     #sn = models.CharField(u'SN号',max_length=128,unique=True)
     #manufactory = models.CharField(verbose_name=u'制造商',max_length=128,null=True, blank=True)
     model = models.CharField(u'型号',max_length=128,null=True, blank=True )
-    firmware = models.ForeignKey('Software',blank=True,null=True)
+    firmware = models.ForeignKey('Software',blank=True,null=True)    #固件
     port_num = models.SmallIntegerField(u'端口个数',null=True, blank=True )
     device_detail = models.TextField(u'设置详细配置',null=True, blank=True )
 
@@ -243,7 +243,7 @@ class NIC(models.Model):
         verbose_name = u'网卡'
         verbose_name_plural = u"网卡"
         #unique_together = ("asset_id", "slot")
-        unique_together = ("asset", "macaddress")
+        unique_together = ("asset", "macaddress")    #联合唯一:sn可以重复，mac地址可以重复，但是sn和mac地址合起来一般不能唯一
     auto_create_fields = ['name','sn','model','macaddress','ipaddress','netmask','bonding']
 
 class RaidAdaptor(models.Model):
@@ -272,7 +272,7 @@ class Manufactory(models.Model):
 
 
 class BusinessUnit(models.Model):
-    parent_unit = models.ForeignKey('self',related_name='parent_level',blank=True,null=True)
+    parent_unit = models.ForeignKey('self',related_name='parent_level',blank=True,null=True)   #业务线，树形结构；主业务线下面有子业务线
     name = models.CharField(u'业务线',max_length=64, unique=True)
 
     #contact = models.ForeignKey('UserProfile',default=None)

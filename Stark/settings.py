@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'Wolf',
     'Arya',
+    # 'Sansa',
 ]
 
 MIDDLEWARE = [
@@ -130,3 +132,6 @@ MQ_CONN = {
     'port': 5672,
     'password': ''
 }
+
+
+AUTH_USER_MODEL = 'Wolf.UserProfile'
