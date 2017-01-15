@@ -34,7 +34,7 @@ class ArgvHandler(object):
     def collect_data(self):
         obj = info_collection.InfoCollection()
         asset_data = obj.collect()
-        #print asset_data
+        print (asset_data)
     def run_forever(self):
         pass
     def __attach_token(self,url_str):

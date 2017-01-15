@@ -61,6 +61,7 @@ class NewAssetApprovalZoneAdmin(admin.ModelAdmin):
     list_display = ('sn','asset_type','manufactory','model','cpu_model','cpu_count','cpu_core_count','ram_size','os_distribution','os_release','date','approved','approved_by','approved_date')
     actions = ['approve_selected_objects']
     def approve_selected_objects(modeladmin, request, queryset):
+        print(modeladmin,request,queryset)
         selected = request.POST.getlist(admin.ACTION_CHECKBOX_NAME)
         ct = ContentType.objects.get_for_model(queryset.model)
         return HttpResponseRedirect("/asset/new_assets/approval/?ct=%s&ids=%s" % (ct.pk, ",".join(selected)))

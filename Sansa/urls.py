@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url,include
 from django.contrib import admin
+from Sansa import views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'salt/',include('Arya.urls')),
-    url(r'asset/',include('Sansa.urls'))
+    url(r'report/$', views.asset_report),
+    url(r'report/asset_with_no_asset_id/$',views.asset_with_no_asset_id),
+    url(r'^new_assets/approval/$', views.new_assets_approval, name="new_assets_approval"),
 ]
