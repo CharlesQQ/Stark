@@ -4,3 +4,10 @@
 同步数据库的时候，需要清空之前的数据库，包括表结构，然后将包含用户认证的app注册进去；
 AUTH_USER_MODEL = 'Wolf.UserProfile'是必须要有的；
 让再注册其他的app，进行同步;
+
+
+ajax一次性获取form表单中的所有数据:dataform；
+
+
+Auth 2.0：使用QQ登录新浪微博等，都是通过Auth 2.0实现的;
+

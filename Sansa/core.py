@@ -382,7 +382,7 @@ class Asset(object):
         data_source: the data source of this component from reporting data
         fk: which key to use to find the connection between main Asset obj and each asset component
         update_fields: what fields in DB will be compared and updated
-        identify_field: use this field to identify each component of an Asset , if set to None,means only use asset id to identify
+        identify_field: use this field to idenify each component of an Asset , if set to None,means only use asset id to identify
          '''
         print(data_source,update_fields,identify_field)
         try:

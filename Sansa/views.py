@@ -4,6 +4,7 @@ from django.shortcuts import render,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from Sansa import core
+from Sansa import models
 
 @csrf_exempt    #这个方法不需要csrf的验证
 #@utils.token_required
@@ -36,7 +37,7 @@ def asset_with_no_asset_id(request):
 
 def new_assets_approval(request):
     if request.method == 'POST':
-        request.POST = request.POST.copy()
+        request.POST = request.POST.copy()    #如果需要修改request.POST中的数据的话，就需要copy一份，否则没有办法直接修改
         approved_asset_list = request.POST.getlist('approved_asset_list')
         approved_asset_list = models.NewAssetApprovalZone.objects.filter(id__in=approved_asset_list)
 
