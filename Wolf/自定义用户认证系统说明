@@ -11,3 +11,9 @@ ajax一次性获取form表单中的所有数据:dataform；
 
 Auth 2.0：使用QQ登录新浪微博等，都是通过Auth 2.0实现的;
 
+
+rest-framework
+
+
+djangorestframework   api
+
