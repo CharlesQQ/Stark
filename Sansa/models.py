@@ -53,7 +53,7 @@ class Asset(models.Model):
     class Meta:
         verbose_name = '资产总表'
         verbose_name_plural = "资产总表"
-    def __str__(self):
+    def __str__(self):                   #每一条记录的标识显示的内容。如果在admin中定义了display_list的话，就不会显示了
         return '<id:%s name:%s>'  %(self.id,self.name )
 
 class Server(models.Model):

@@ -5,13 +5,13 @@ from Sansa import models
 
 class ServerInline(admin.TabularInline):
     model = models.Server
-    exclude = ('memo',)
+    exclude = ('memo',)     #不包含的字段
     #readonly_fields = ['create_date']
 
 class CPUInline(admin.TabularInline):
     model = models.CPU
     exclude = ('memo',)
-    readonly_fields = ['create_date']
+    readonly_fields = ['create_date']       #指定的字段
 class NICInline(admin.TabularInline):
     model = models.NIC
     exclude = ('memo',)
@@ -27,7 +27,7 @@ class DiskInline(admin.TabularInline):
 
 class AssetAdmin(admin.ModelAdmin):
     list_display = ('id','asset_type','sn','name','manufactory','management_ip','idc','business_unit','admin','trade_date','status')
-    inlines = [ServerInline,CPUInline,RAMInline,DiskInline,NICInline]
+    inlines = [ServerInline,CPUInline,RAMInline,DiskInline,NICInline]   #内联的表的列表，可以将包含的表显示在同一个编辑页面
     search_fields = ['sn',]
     list_filter = ['idc','manufactory','business_unit','asset_type']
     choice_fields = ('asset_type','status')
